@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 22:32:39 by akella            #+#    #+#             */
-/*   Updated: 2025/08/14 13:58:08 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/14 15:14:32 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	check_philo_status(t_philo *philo)
 	if (philo->info->fifth_arg && philo->meals >= philo->info->meal_number)
 	{
 		pthread_mutex_unlock(&philo->meal_mutex);
-		return (FAILURE);
+		return (1);
 	}
 	else if (current_time()
 		> (philo->info->die_time + philo->last_meal) && is_eating != 1)
@@ -33,7 +33,7 @@ static int	check_philo_status(t_philo *philo)
 		return (-1);
 	}
 	pthread_mutex_unlock(&philo->meal_mutex);
-	return (SUCCESS);
+	return (0);
 }
 
 static int	check_all_philos(t_philo *philo, int *finished)
@@ -53,7 +53,7 @@ static int	check_all_philos(t_philo *philo, int *finished)
 		philo = philo->next;
 		i++;
 	}
-	return (SUCCESS);
+	return (0);
 }
 
 void	*monitor_meal_limit(void *arg)

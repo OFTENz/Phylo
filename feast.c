@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 22:30:59 by akella            #+#    #+#             */
-/*   Updated: 2025/08/14 13:57:40 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/14 14:22:45 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,29 @@ void	eat(t_philo *philosopher)
 		return ;
 	}
 	eating(philosopher);
+}
+
+void	*philosopher_routine(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->meal_mutex);
+	philo->last_meal = current_time();
+	pthread_mutex_unlock(&philo->meal_mutex);
+	if (philo->id % 2 == 0)
+		usleep(70);
+	while (!is_dead(philo))
+	{
+		eat(philo);
+		if (is_dead(philo))
+			break ;
+		if (check_meals(philo))
+			break ;
+		philo_sleep(philo);
+		if (is_dead(philo))
+			break ;
+		philo_think(philo);
+	}
+	return (NULL);
 }

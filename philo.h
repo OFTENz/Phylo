@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 08:08:22 by akella            #+#    #+#             */
-/*   Updated: 2025/08/14 14:08:41 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/14 21:51:37 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,16 @@
 # include <unistd.h>
 # include <pthread.h>
 
+typedef struct s_gcollct
+{
+	void				*ptr;
+	struct s_gcollct	*next;
+}	t_gcollct;
 
-# define SUCCESS 0
-# define FAILURE 1
+# define FREE_ONE 1
+
+# define FREE_ALL 9
+
 
 typedef struct s_data
 {
@@ -57,37 +64,42 @@ typedef struct s_philo
 	t_data			*info;
 }	t_philo;
 
-void	destroy_all(t_philo *philo, int count);
-int		ft_lstadd_back(t_philo **lst, t_philo *new);
 t_philo	*ft_lst_new(int data);
-
-long	current_time(void);
 t_philo	*ft_lstlast(t_philo *lst);
-int		arg_validation(int argc, char **av);
-long	hybrid_atoi(const char *str);
-int		check_if_valid(char *arg);
-int		ft_usleep(long milliseconds, t_philo *philo);
+t_philo	*create_philosophers(t_data *info, int total);
+t_data	*init_mutex(t_data *info);
 
-int		handle_single_philosopher(t_philo *philo);
-void	eat(t_philo *philosopher);
-int		check_meals(t_philo *philo);
+
+void	load_it(t_data *data, int i, int value);
+void	wipe_all(t_gcollct *head);
 void	philo_sleep(t_philo *philo);
 void	philo_think(t_philo *philo);
+void	search_gcollct(t_gcollct *head, void *ptr, t_gcollct **ret);
 void	*monitor_meal_limit(void *arg);
+void	ft_free(void *ptr, int flag);
 void	join_threads(t_philo *philo, int size);
-int		arg_validation(int argc, char **av);
+void	eat(t_philo *philosopher);
 void	print_philo_status(const char *message, t_philo *philosopher);
 void	*philosopher_routine(void *arg);
-long	calculate_thinking_time(long eat, long sleep);
-int		initialize_philo(t_philo *philo, int size);
+void	free_one(t_gcollct **hold, t_gcollct *head, void *ptr);
 void	join_threads(t_philo *philo, int size);
-t_data	*set_info(int ac, char **av);
+void	*philosopher_routine(void *arg);
+void	clean_all_mutex(t_philo *philo, int count);
+void	*ft_malloc(size_t size);
+
+long	hybrid_atoi(const char *str);
+long	current_time(void);
+
+int		ft_lstadd_back(t_philo **first, t_philo *new);
+int		check_if_valid(char *arg, t_data **data);
+int		ft_usleep(long milliseconds, t_philo *philo);
+int		handle_single_philosopher(t_philo *philo);
+int		check_meals(t_philo *philo);
+int		arg_validation(int argc, char **av, t_data **data);
+int		initialize_philo(t_philo *philo, int size);
 int		start_philosophers(t_philo *philo, int size);
 int		is_dead(t_philo *philo);
-t_philo	*create_philosophers(t_philo *philo_list, t_data *info, int total);
-int		init_philo_mutexes(t_philo *philo);
-void	*philosopher_routine(void *arg);
-void	cleanup_info(t_data *info);
+int		single_mutex_init(t_philo *philo);
 int		iss_digit(const char *str);
 
 #endif

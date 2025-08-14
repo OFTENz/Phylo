@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:59:26 by akella            #+#    #+#             */
-/*   Updated: 2025/08/14 14:12:51 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/14 15:14:32 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ int	is_dead(t_philo *philo)
 	if (philo->info->died)
 	{
 		pthread_mutex_unlock(&philo->info->death);
-		return (FAILURE);
+		return (1);
 	}
 	pthread_mutex_unlock(&philo->info->death);
-	return (SUCCESS);
+	return (0);
 }
 
 void	print_philo_status(const char *message, t_philo *philosopher)
@@ -56,12 +56,12 @@ int	ft_usleep(long milliseconds, t_philo *philo)
 			break ;
 		usleep(500);
 	}
-	return (SUCCESS);
+	return (0);
 }
 
 int	handle_single_philosopher(t_philo *philo)
 {
 	ft_usleep(philo->info->die_time, philo);
 	print_philo_status("died", philo);
-	return (FAILURE);
+	return (1);
 }

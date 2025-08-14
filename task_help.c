@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   more_task.c                                        :+:      :+:    :+:   */
+/*   task_help.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 22:42:16 by akella            #+#    #+#             */
-/*   Updated: 2025/08/14 13:53:57 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/14 21:23:40 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	cleanup_info(t_data *info)
-{
-	pthread_mutex_destroy(&info->print);
-	pthread_mutex_destroy(&info->death);
-	pthread_mutex_destroy(&info->meal_count);
-	free(info);
-}
 
-void	destroy_all(t_philo *philo, int count)
+
+void	clean_all_mutex(t_philo *philo, int count)
 {
-	t_philo	*current;
+	t_philo	*hold;
 	t_data	*info;
 	int		i;
 
@@ -30,24 +24,25 @@ void	destroy_all(t_philo *philo, int count)
 		return ;
 	i = 0;
 	info = philo->info;
+	hold = philo;
 	while (i < count)
 	{
-		current = philo;
-		philo = philo->next;
-		pthread_mutex_destroy(&current->fork);
-		pthread_mutex_destroy(&current->meal_mutex);
-		pthread_mutex_destroy(&current->save_eat);
-		free(current);
+		pthread_mutex_destroy(&hold->fork);
+		pthread_mutex_destroy(&hold->meal_mutex);
+		pthread_mutex_destroy(&hold->save_eat);
+		hold = (*hold).next;
 		i++;
 	}
-	cleanup_info(info);
+	pthread_mutex_destroy(&info->print);
+	pthread_mutex_destroy(&info->death);
+	pthread_mutex_destroy(&info->meal_count);
 }
 
 t_philo	*ft_lst_new(int content)
 {
 	t_philo	*philo;
 
-	philo = malloc(sizeof(t_philo));
+	philo = ft_malloc(sizeof(t_philo));
 	if (!philo)
 		return (NULL);
 	philo->id = content;
@@ -65,27 +60,25 @@ long	current_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-int	ft_lstadd_back(t_philo **lst, t_philo *new)
+int	ft_lstadd_back(t_philo **first, t_philo *new)
 {
 	t_philo	*last;
 
-	if (!lst || !new)
+	if (!first || !new)
 		return (0);
-	if (*lst == NULL)
+	if (*first == NULL)
 	{
-		*lst = new;
+		*first = new;
 		new->next = new;
 		new->prev = new;
 	}
 	else
 	{
-		last = ft_lstlast(*lst);
-		if (!last)
-			return (0);
-		new->next = *lst;
+		last = ft_lstlast(*first);
+		new->next = *first;
 		new->prev = last;
 		last->next = new;
-		(*lst)->prev = new;
+		(*first)->prev = new;
 	}
 	return (1);
 }
