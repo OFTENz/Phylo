@@ -11,8 +11,8 @@ SRC = main.c \
  
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror 
-NAME = philo
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g
+NAME = philo 
 
 all : $(NAME)
 

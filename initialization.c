@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/28 16:42:42 by akella            #+#    #+#             */
-/*   Updated: 2025/08/14 21:37:15 by sel-mir          ###   ########.fr       */
+/*   Created: 2025/08/15 16:06:54 by sel-mir           #+#    #+#             */
+/*   Updated: 2025/08/15 16:22:49 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "philo.h"
 
@@ -27,44 +28,56 @@ t_data	*init_mutex(t_data *info)
 	return (info);
 }
 
-int	initialize_philo(t_philo *philo, int size)
+int	philo_spawn(t_philo *philo)
 {
 	int			i;
 	pthread_t	monitor;
 	t_philo		*head;
+	t_data	*data;
 
 	head = philo;
-	if (start_philosophers(philo, size))
+	data = (*philo).data;
+	if (start_philosophers(philo))
 		return (1);
 	if (pthread_create(&monitor, NULL, monitor_meal_limit, head))
-	{
-		join_threads(head, size);
-		return (1);
-	}
+		return (join_threads(head), 1);
 	pthread_join(monitor, NULL);
 	i = 0;
 	philo = head;
-	while (i < size)
+	while (i < (*data).philos_number)
 	{
-		pthread_join(philo->thread, NULL);
-		philo = philo->next;
+		pthread_join((*philo).thread, NULL);
+		philo = (*philo).next;
 		i++;
-	} 
+	}
 	return (0);
 }
-int	start_philosophers(t_philo *philo, int size)
+int	start_philosophers(t_philo *philo)
 {
 	int		i;
 	t_philo	*head;
 
 	head = philo;
 	i = 0;
-	while (i < size)
+	while (i < (*(*head).data).philos_number)
 	{
-		if (pthread_create(&(philo->thread), NULL, philosopher_routine, philo))
-			return (join_threads(head, i), 1);
-		philo = philo->next;
+		if (pthread_create(&(((*philo).thread)), NULL, philosopher_routine, philo))
+			return (join_threads(head), 1);
+		philo = (*philo).next;
 		i++;
 	}
 	return (0);
+}
+
+void	join_yet(t_philo *head, int yet)
+{
+	int		i;
+
+	i = 0;
+	while (i < yet)
+	{
+		pthread_join((*head).thread, NULL);
+		head = (*head).prev;
+		i++;
+	}
 }

@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/27 15:33:04 by akella            #+#    #+#             */
-/*   Updated: 2025/08/14 21:35:17 by sel-mir          ###   ########.fr       */
+/*   Created: 2025/08/15 16:06:41 by sel-mir           #+#    #+#             */
+/*   Updated: 2025/08/15 16:24:05 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "philo.h"
 
@@ -31,25 +32,6 @@ long	hybrid_atoi(const char *str)
 		i++;
 	}
 	return (result);
-}
-
-int	check_if_valid(char *arg, t_data **data)
-{
-	static	int	i;
-	long	value;
-
-	if (iss_digit(arg))
-		return (write(2, "Error: not a vaild Number !\n", 44), 1);
-	value = hybrid_atoi(arg);
-	if (value <= 0)
-		return (1);
-	if ((i == 1 || i == 2 || i == 3) && value < 60)
-		return (write(2, "Error: Input a value >= 60 !", 29), 1);
-	if (i == 0 && value > 200)
-		return (write(2, "Error: Input a value <= 200", 28),  1);
-	load_it(*data, i, value);
-	i++;
-	return (0);
 }
 
 int	arg_validation(int argc, char **av, t_data **data)
@@ -94,32 +76,35 @@ int	single_mutex_init(t_philo *philo)
 	return (1);
 }
 
-t_philo	*create_philosophers(t_data *info, int total)
+t_philo	*bag_prepa(t_data *data)
 {
-	t_philo	*new_philo;
-	t_philo *philo_list;
-	int		id;
+	t_philo	*new;
+	t_philo *head;
+	int	i;
 	int		yet;
 
-	(1) && (philo_list = NULL), (id = 1, yet = 0);
-	while (id <= total)
+	head = NULL;
+	i = 1;
+	yet = 0;
+	while (i <= (*data).philos_number)
 	{
-		new_philo = ft_lst_new(id);
-		if (!new_philo)
-			return (clean_all_mutex(philo_list, yet), NULL);
-		new_philo->info = info;
-		new_philo->last_meal = current_time();
-		if (!single_mutex_init(new_philo))
-			return (clean_all_mutex(philo_list, yet), NULL);
-		if (!ft_lstadd_back(&philo_list, new_philo))
-		{
-			pthread_mutex_destroy(&new_philo->fork);
-			pthread_mutex_destroy(&new_philo->meal_mutex);
-			pthread_mutex_destroy(&new_philo->save_eat);
-			return (clean_all_mutex(philo_list, yet), NULL);
-		}
+		new = new_fella(i);
+		if (!new)
+			return (clean_all_mutex(head, yet), NULL);
+		(*new).data = data;
+		(*new).last_meal = current_time();
+		if (!single_mutex_init(new))
+			return (clean_all_mutex(head, yet), NULL);
+		ft_lstadd_back(&head, new);
 		yet++;
-		id++;
+		i++;
 	}
-	return (philo_list);
+	return (head);
+}
+
+void	single_mutex_destroy(t_philo *new)
+{
+	pthread_mutex_destroy(&((*new).fork));
+	pthread_mutex_destroy(&((*new).meal_mutex));
+	pthread_mutex_destroy(&((*new).save_eat));
 }

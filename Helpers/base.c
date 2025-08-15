@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 14:52:45 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/14 20:35:57 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/15 15:39:55 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	ft_free(void *ptr, int flag)
 	static t_gcollct	*head;
 	t_gcollct			**hold;
 	if (flag == FREE_ALL)
-		dprintf(2, "\nRunned !\n");
 	hold = NULL;
 	if (!head && ptr)
 	{

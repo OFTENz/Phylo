@@ -1,14 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   eat.c                                              :+:      :+:    :+:   */
+/*   feast.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/16 22:30:59 by akella            #+#    #+#             */
-/*   Updated: 2025/08/14 14:22:45 by sel-mir          ###   ########.fr       */
+/*   Created: 2025/08/15 16:06:48 by sel-mir           #+#    #+#             */
+/*   Updated: 2025/08/15 16:06:48 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "philo.h"
 
@@ -22,7 +23,7 @@ static void	eating(t_philo *philosopher)
 	pthread_mutex_lock(&philosopher->meal_mutex);
 	philosopher->last_meal = current_time();
 	pthread_mutex_unlock(&philosopher->meal_mutex);
-	ft_usleep(philosopher->info->eat_time, philosopher);
+	ft_usleep(philosopher->data->eat_time, philosopher);
 	pthread_mutex_lock(&philosopher->meal_mutex);
 	philosopher->meals++;
 	pthread_mutex_unlock(&philosopher->meal_mutex);
@@ -42,9 +43,9 @@ void	eat(t_philo *philosopher)
 		return ;
 	}
 	print_philo_status("has taken a fork", philosopher);
-	if (philosopher->info->philos_number == 1)
+	if (philosopher->data->philos_number == 1)
 	{
-		ft_usleep(philosopher->info->die_time, philosopher);
+		ft_usleep(philosopher->data->die_time, philosopher);
 		print_philo_status("died", philosopher);
 		pthread_mutex_unlock(&(philosopher->fork));
 		return ;
@@ -82,4 +83,23 @@ void	*philosopher_routine(void *arg)
 		philo_think(philo);
 	}
 	return (NULL);
+}
+
+int	check_if_valid(char *arg, t_data **data)
+{
+	static	int	i;
+	long	value;
+
+	if (iss_digit(arg))
+		return (write(2, "Error: not a vaild Number !\n", 44), 1);
+	value = hybrid_atoi(arg);
+	if (value <= 0)
+		return (1);
+	if ((i == 1 || i == 2 || i == 3) && value < 60)
+		return (write(2, "Error: Input a value >= 60 !", 29), 1);
+	if (i == 0 && value > 200)
+		return (write(2, "Error: Input a value <= 200", 28),  1);
+	load_it(*data, i, value);
+	i++;
+	return (0);
 }
