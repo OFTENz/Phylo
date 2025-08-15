@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:54 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/15 16:22:49 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/15 16:29:30 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_data	*init_mutex(t_data *info)
 	return (info);
 }
 
-int	philo_spawn(t_philo *philo)
+int	philo_management(t_philo *philo)
 {
 	int			i;
 	pthread_t	monitor;
@@ -37,7 +37,7 @@ int	philo_spawn(t_philo *philo)
 
 	head = philo;
 	data = (*philo).data;
-	if (start_philosophers(philo))
+	if (philo_spawn(philo))
 		return (1);
 	if (pthread_create(&monitor, NULL, monitor_meal_limit, head))
 		return (join_threads(head), 1);
@@ -52,16 +52,18 @@ int	philo_spawn(t_philo *philo)
 	}
 	return (0);
 }
-int	start_philosophers(t_philo *philo)
+int	philo_spawn(t_philo *philo)
 {
-	int		i;
 	t_philo	*head;
+	t_data	*data;
+	int		i;
 
 	head = philo;
+	data = (*head).data;
 	i = 0;
-	while (i < (*(*head).data).philos_number)
+	while (i < (*data).philos_number)
 	{
-		if (pthread_create(&(((*philo).thread)), NULL, philosopher_routine, philo))
+		if (pthread_create(&((*philo).thread), NULL, philosopher_routine, philo))
 			return (join_threads(head), 1);
 		philo = (*philo).next;
 		i++;

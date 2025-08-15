@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:15:42 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/15 16:23:25 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/15 16:28:56 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,14 @@ void	join_yet(t_philo *head, int yet);
 long	hybrid_atoi(const char *str);
 long	current_time(void);
 
-int		philo_spawn(t_philo *philo);
+int		philo_management(t_philo *philo);
 int		ft_lstadd_back(t_philo **first, t_philo *new);
 int		check_if_valid(char *arg, t_data **data);
 int		ft_usleep(long milliseconds, t_philo *philo);
 int		handle_single_philosopher(t_philo *philo);
 int		check_meals(t_philo *philo);
 int		arg_validation(int argc, char **av, t_data **data);
-int		start_philosophers(t_philo *philo);
+int		philo_spawn(t_philo *philo);
 int		is_dead(t_philo *philo);
 int		single_mutex_init(t_philo *philo);
 int		iss_digit(const char *str);

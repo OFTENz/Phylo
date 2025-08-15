@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:27 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/15 16:23:50 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/15 16:28:17 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int ac, char **av)
 	head = bag_prepa(data);
 	if (!head)
 		return (ft_free(NULL, FREE_ALL), 1);
-	if (philo_spawn(head))
+	if (philo_management(head))
 		return (clean_all_mutex(head,  (*data).philos_number), ft_free(NULL, FREE_ALL), 1);
 	return (clean_all_mutex(head, (*data).philos_number), ft_free(NULL, FREE_ALL), 0);
 }
