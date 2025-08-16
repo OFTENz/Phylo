@@ -1,0 +1,5 @@
+							General Questions : 
+
+					-1 Why do we  sleep the monitor for 1000 ; 
+
+					-2 

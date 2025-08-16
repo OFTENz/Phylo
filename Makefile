@@ -1,12 +1,12 @@
 SRC = main.c \
 		./Helpers/base.c \
-		utils.c \
+		./Helpers/utils.c \
 		./Helpers/check_args.c \
-		initialization.c \
-		tasks.c \
+		./Helpers/initialization.c \
 		./Helpers/base_.c \
-		task_help.c \
-		feast.c\
+		./Helpers/task_help.c \
+		./Helpers/activities.c \
+		./Helpers/feast.c\
 		monitor.c \
  
 OBJ = $(SRC:.c=.o)

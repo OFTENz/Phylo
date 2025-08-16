@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:27 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/15 16:28:17 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 19:01:08 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ int	main(int ac, char **av)
 	head = NULL;
 	if (arg_validation(ac, av, &data))
 		return (ft_free(NULL, FREE_ALL), 1);
-	if (!init_mutex(data))
+	if (!general_mutexe_init(data))
 		return (ft_free(NULL, FREE_ALL), 1);
-	head = bag_prepa(data);
-	if (!head)
+	if (!bag_prepa(data, &head))
 		return (ft_free(NULL, FREE_ALL), 1);
 	if (philo_management(head))
 		return (clean_all_mutex(head,  (*data).philos_number), ft_free(NULL, FREE_ALL), 1);

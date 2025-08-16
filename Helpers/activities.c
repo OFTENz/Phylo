@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tasks.c                                            :+:      :+:    :+:   */
+/*   activities.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:23 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/15 16:22:26 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 19:36:20 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,34 @@ void	join_threads(t_philo *philo)
 
 void	philo_sleep(t_philo *philo)
 {
-	print_philo_status("is sleeping", philo);
-	ft_usleep(philo->data->sleep_time, philo);
+	t_data	*data;
+
+	data = (*philo).data;
+	write_status("is sleeping", philo);
+	ft_usleep((*data).sleep_time, philo);
 }
 
 void	philo_think(t_philo *philo)
 {
-	print_philo_status("is thinking", philo);
-	ft_usleep(philo->data->think_time, philo);
+	t_data	*data;
+
+	data = (*philo).data;
+	write_status("is thinking", philo);
+	ft_usleep((*data).think_time, philo);
 }
 
-int	check_meals(t_philo *philo)
+int	satisfied_yet(t_philo *philo)
 {
-	int	result;
+	t_data	*data;
 
-	if (philo->data->fifth_arg == 0)
+	data = (*philo).data;
+	if ((*data).fifth_arg == 0)
 		return (0);
-	pthread_mutex_lock(&philo->meal_mutex);
-	result = (philo->meals >= philo->data->meal_number);
-	pthread_mutex_unlock(&philo->meal_mutex);
-	return (result);
+	pthread_mutex_lock(&(*philo).meal_time_mutex);
+	if ((*philo).meals >= (*data).meal_number)
+		return (pthread_mutex_unlock(&(*philo).meal_time_mutex), 1);
+	else
+		return (pthread_mutex_unlock(&(*philo).meal_time_mutex), 0);
 }
 
 t_philo	*ft_lstlast(t_philo *lst)

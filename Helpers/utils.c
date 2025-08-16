@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:28 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/15 16:07:28 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 19:39:16 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,43 +15,60 @@
 
 int	is_dead(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->death);
-	if (philo->data->died)
+	t_data	*data;
+
+	data = (*philo).data;
+	pthread_mutex_lock(&(*data).death);
+	if ((*data).died)
+		return (pthread_mutex_unlock(&(*data).death), 1);;
+	return (pthread_mutex_unlock(&(*data).death), 0);
+}
+
+int	compare(char *str, char *src)
+{
+	int	a;
+
+	a = 0;
+	while (str[a] && src[a])
 	{
-		pthread_mutex_unlock(&philo->data->death);
-		return (1);
+		if (str[a] != src[a])
+			return (1);
+		a++;
 	}
-	pthread_mutex_unlock(&philo->data->death);
+	if (str[a] != src[a])
+		return (1);
 	return (0);
 }
 
-void	print_philo_status(const char *message, t_philo *philosopher)
+void	write_status(char *state, t_philo *philo)
 {
 	long	elapsed_time;
+	t_data		*data;
 
-	pthread_mutex_lock(&(philosopher->data->print));
-	if (is_dead(philosopher))
+	data = (*philo).data;
+	pthread_mutex_lock(&((*data).print));
+	if (is_dead(philo))
 	{
-		pthread_mutex_unlock(&(philosopher->data->print));
+		pthread_mutex_unlock(&((*data).print));
 		return ;
 	}
-	if (message && *message == 'd')
+	if (state && !compare(state, "died"))
 	{
-		pthread_mutex_lock(&philosopher->data->death);
-		philosopher->data->died = 1;
-		pthread_mutex_unlock(&philosopher->data->death);
+		pthread_mutex_lock(&(*data).death);
+		(*data).died = 1;
+		pthread_mutex_unlock(&(*data).death);
 	}
-	elapsed_time = current_time() - philosopher->data->start;
-	printf("%ld %d %s\n", elapsed_time, philosopher->id, message);
-	pthread_mutex_unlock(&(philosopher->data->print));
+	elapsed_time = what_timeizit() - (*data).start;
+	printf("%ld %d %s\n", elapsed_time, (*philo).id, state);
+	pthread_mutex_unlock(&((*data).print));
 }
 
 int	ft_usleep(long milliseconds, t_philo *philo)
 {
 	unsigned long	start;
 
-	start = current_time();
-	while ((current_time() - start) < (unsigned long)milliseconds)
+	start = what_timeizit();
+	while ((what_timeizit() - start) < (unsigned long)milliseconds)
 	{
 		if (is_dead(philo))
 			break ;
@@ -63,6 +80,6 @@ int	ft_usleep(long milliseconds, t_philo *philo)
 int	handle_single_philosopher(t_philo *philo)
 {
 	ft_usleep(philo->data->die_time, philo);
-	print_philo_status("died", philo);
+	write_status("died", philo);
 	return (1);
 }

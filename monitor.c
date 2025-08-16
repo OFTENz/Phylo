@@ -6,73 +6,85 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:05 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/15 16:07:05 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 19:37:09 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "philo.h"
 
+//	this function is checkign if the philo ate enough 
+//	or if he should die cuz he spent to much time without eating 
+//	and checking if he is currently eating to avoid mistaking in it's state !
+
 static int	check_philo_status(t_philo *philo)
 {
 	int		is_eating;
+	t_data	*data = (*philo).data;
 
-	pthread_mutex_lock(&philo->save_eat);
-	is_eating = philo->is_eating;
-	pthread_mutex_unlock(&philo->save_eat);
-	pthread_mutex_lock(&philo->meal_mutex);
-	if (philo->data->fifth_arg && philo->meals >= philo->data->meal_number)
+	pthread_mutex_lock(&(*philo).is_eating_mutex);
+	is_eating = (*philo).is_eating;
+	pthread_mutex_unlock(&(*philo).is_eating_mutex);
+	pthread_mutex_lock(&(*philo).meal_time_mutex);
+	//	In here  we checking if he eat_enough !
+	if ((*data).fifth_arg && (*philo).meals >= (*data).meal_number)
+		return (pthread_mutex_unlock(&(*philo).meal_time_mutex), 1);
+	//	Checking if he should die : last_meal + die_time and checking if he is not eating !
+	else if (what_timeizit()
+		> ((*data).die_time + (*philo).last_meal) && is_eating != 1)
 	{
-		pthread_mutex_unlock(&philo->meal_mutex);
-		return (1);
-	}
-	else if (current_time()
-		> (philo->data->die_time + philo->last_meal) && is_eating != 1)
-	{
-		pthread_mutex_unlock(&philo->meal_mutex);
-		print_philo_status("died", philo);
+		pthread_mutex_unlock(&(*philo).meal_time_mutex);
+		write_status("died", philo);
 		return (-1);
 	}
-	pthread_mutex_unlock(&philo->meal_mutex);
+	
+	pthread_mutex_unlock(&(*philo).meal_time_mutex);
 	return (0);
 }
 
+//	this function is checking if the philo is dead 
+//	and if he should be out of the stimulation cuz he ate enough !
+
 static int	check_all_philos(t_philo *philo, int *finished)
 {
-	int	i;
+	t_data	*data;
 	int	status;
+	int	i;
 
 	*finished = 0;
+	data = (*philo).data;
 	i = 0;
-	while (i < philo->data->philos_number)
+	while (i < (*data).philos_number)
 	{
 		status = check_philo_status(philo);
 		if (status == -1)
 			return (-1);
 		if (status == 1)
 			(*finished)++;
-		philo = philo->next;
+		philo = (*philo).next;
 		i++;
 	}
 	return (0);
 }
 
-void	*monitor_meal_limit(void *arg)
+void	*monitoring(void *arg)
 {
-	t_philo	*current_philo;
-	int		finished_philosophers;
+	t_philo	*rn;
+	int		belly_full;
+	t_data		*data;
 
-	current_philo = (t_philo *)arg;
+	rn = (t_philo *)arg;
+	data = (*rn).data;
 	usleep(1000);
-	while (!is_dead(current_philo))
+	while (!is_dead(rn))
 	{
-		if (check_all_philos(current_philo, &finished_philosophers) == -1)
+		if (check_all_philos(rn, &belly_full) == -1)
 			return (NULL);
-		if (finished_philosophers == current_philo->data->philos_number)
+		if (belly_full == (*data).philos_number)
 		{
-			pthread_mutex_lock(&current_philo->data->death);
-			current_philo->data->all_ate = 1;
-			pthread_mutex_unlock(&current_philo->data->death);
+			pthread_mutex_lock(&(*data).death);
+			(*data).all_ate = 1;
+			pthread_mutex_unlock(&(*data).death);
 			return (NULL);
 		}
 		usleep(100);

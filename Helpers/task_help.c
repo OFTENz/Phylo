@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:17 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/15 16:07:17 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 19:32:08 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	clean_all_mutex(t_philo *philo, int count)
 	while (i < count)
 	{
 		pthread_mutex_destroy(&(*hold).fork);
-		pthread_mutex_destroy(&(*hold).meal_mutex);
-		pthread_mutex_destroy(&(*hold).save_eat);
+		pthread_mutex_destroy(&(*hold).meal_time_mutex);
+		pthread_mutex_destroy(&(*hold).is_eating_mutex);
 		hold = (*hold).next;
 		i++;
 	}
@@ -53,7 +53,7 @@ t_philo	*new_fella(int content)
 	return (philo);
 }
 
-long	current_time(void)
+long	what_timeizit(void)
 {
 	struct timeval	tv;
 
