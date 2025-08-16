@@ -1,6 +1,6 @@
 SRC = main.c \
 		./Helpers/base.c \
-		./Helpers/utils.c \
+		./Helpers/Helpers.c \
 		./Helpers/check_args.c \
 		./Helpers/initialization.c \
 		./Helpers/base_.c \

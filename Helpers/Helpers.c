@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   Helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:28 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 19:56:27 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 22:05:08 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	write_status(char *state, t_philo *philo)
 	pthread_mutex_lock(&((*data).printing));
 	if (is_dead(philo))
 		return (pthread_mutex_unlock(&((*data).printing)), (void)1);
-	if (state && !compare(state, "died"))
+	if (state && !compare(state, "Died"))
 	{
 		pthread_mutex_lock(&(*data).death);
 		(*data).died = 1;
@@ -72,11 +72,4 @@ int	ft_usleep(long milliseconds, t_philo *philo)
 		usleep(500);
 	}
 	return (0);
-}
-
-int	handle_single_philosopher(t_philo *philo)
-{
-	ft_usleep(philo->data->die_time, philo);
-	write_status("died", philo);
-	return (1);
 }

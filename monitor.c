@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:05 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 19:37:09 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 22:04:54 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	check_philo_status(t_philo *philo)
 		> ((*data).die_time + (*philo).last_meal) && is_eating != 1)
 	{
 		pthread_mutex_unlock(&(*philo).meal_time_mutex);
-		write_status("died", philo);
+		write_status("Died", philo);
 		return (-1);
 	}
 	

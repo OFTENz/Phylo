@@ -6,12 +6,32 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:48 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 19:37:09 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 22:03:48 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "philo.h"
+
+//	This is the function that update the state of the philo to the eating state
+//	protecting the 
+
+void	update_state(t_philo *philo)
+{
+	pthread_mutex_lock(&(*philo).is_eating_mutex);
+	(*philo).is_eating = 1;
+	pthread_mutex_unlock(&(*philo).is_eating_mutex);
+	pthread_mutex_lock(&(*philo).meal_time_mutex);
+	(*philo).last_meal = what_timeizit();
+	pthread_mutex_unlock(&(*philo).meal_time_mutex);
+}
+
+void	mo_more_eating(t_philo *philo)
+{
+	pthread_mutex_lock(&(*philo).is_eating_mutex);
+	(*philo).is_eating = 0;
+	pthread_mutex_unlock(&(*philo).is_eating_mutex);
+}
 
 void	eat_activity(t_philo *philosopher)
 {
@@ -20,21 +40,25 @@ void	eat_activity(t_philo *philosopher)
 	data = (*philosopher).data;
 	write_status("took a fork !", philosopher);
 	write_status("is eating !", philosopher);
-	pthread_mutex_lock(&(*philosopher).is_eating_mutex);
-	(*philosopher).is_eating = 1;
-	pthread_mutex_unlock(&(*philosopher).is_eating_mutex);
-	pthread_mutex_lock(&(*philosopher).meal_time_mutex);
-	(*philosopher).last_meal = what_timeizit();
-	pthread_mutex_unlock(&(*philosopher).meal_time_mutex);
+	update_state(philosopher);
 	ft_usleep((*data).eat_time, philosopher);
 	pthread_mutex_lock(&(*philosopher).meal_time_mutex);
 	(*philosopher).meals++;
 	pthread_mutex_unlock(&(*philosopher).meal_time_mutex);
 	pthread_mutex_unlock(&((*(*philosopher).next).fork));
 	pthread_mutex_unlock(&((*philosopher).fork));
-	pthread_mutex_lock(&(*philosopher).is_eating_mutex);
-	(*philosopher).is_eating = 0;
-	pthread_mutex_unlock(&(*philosopher).is_eating_mutex);
+	mo_more_eating(philosopher);
+}
+
+void	one_philo_case(t_philo *philo)
+{
+	t_data	*data;
+
+	data = (*philo).data;
+	ft_usleep((*data).die_time, philo);
+	write_status("Died", philo);
+	pthread_mutex_unlock(&((*philo).fork));
+	return ;	
 }
 
 void	eat_management(t_philo *philosopher)
@@ -44,18 +68,10 @@ void	eat_management(t_philo *philosopher)
 	data = (*philosopher).data;
 	pthread_mutex_lock(&((*philosopher).fork));
 	if (is_dead(philosopher))
-	{
-		pthread_mutex_unlock(&((*philosopher).fork));
-		return ;
-	}
+		return (pthread_mutex_unlock(&((*philosopher).fork)), (void)1);
 	write_status("took a fork !", philosopher);
 	if ((*data).philos_number == 1)
-	{
-		ft_usleep((*data).die_time, philosopher);
-		write_status("Died", philosopher);
-		pthread_mutex_unlock(&((*philosopher).fork));
-		return ;
-	}
+		return (one_philo_case(philosopher), (void)1);
 	pthread_mutex_lock(&((*(*philosopher).next).fork));
 	if (is_dead(philosopher))
 	{
@@ -69,8 +85,10 @@ void	eat_management(t_philo *philosopher)
 void	*philosopher_routine(void *arg)
 {
 	t_philo	*philo;
+	t_data	*data;
 
 	philo = (t_philo *)arg;
+	data = (*philo).data;
 	pthread_mutex_lock(&(*philo).meal_time_mutex);
 	(*philo).last_meal = what_timeizit();
 	pthread_mutex_unlock(&(*philo).meal_time_mutex);
@@ -83,10 +101,11 @@ void	*philosopher_routine(void *arg)
 			break ;
 		if (satisfied_yet(philo))
 			break ;
-		philo_sleep(philo);
+		write_status("is sleeping", philo);
+		ft_usleep((*data).sleep_time, philo);
 		if (is_dead(philo))
 			break ;
-		philo_think(philo);
+		write_status("is thinking", philo);
 	}
 	return (NULL);
 }
