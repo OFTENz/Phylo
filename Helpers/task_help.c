@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:17 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 19:32:08 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 19:57:35 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 void	clean_all_mutex(t_philo *philo, int count)
 {
 	t_philo	*hold;
-	t_data	*info;
+	t_data	*data;
 	int		i;
 
 	if (!philo)
 		return ;
 	i = 0;
-	info = (*philo).data;
+	data = (*philo).data;
 	hold = philo;
 	while (i < count)
 	{
@@ -34,9 +34,9 @@ void	clean_all_mutex(t_philo *philo, int count)
 		hold = (*hold).next;
 		i++;
 	}
-	pthread_mutex_destroy(&(*info).print);
-	pthread_mutex_destroy(&(*info).death);
-	pthread_mutex_destroy(&(*info).meal_count);
+	pthread_mutex_destroy(&(*data).printing);
+	pthread_mutex_destroy(&(*data).death);
+	pthread_mutex_destroy(&(*data).meal_count);
 }
 
 t_philo	*new_fella(int content)

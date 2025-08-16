@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:54 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 18:47:28 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 19:56:27 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 t_data	*general_mutexe_init(t_data *data)
 {
-	if (pthread_mutex_init(&(*data).print, NULL) != 0)
+	if (pthread_mutex_init(&(*data).printing, NULL) != 0)
 		return (NULL);
 	if (pthread_mutex_init(&(*data).death, NULL) != 0)
-		return (pthread_mutex_destroy(&(*data).print), NULL);
+		return (pthread_mutex_destroy(&(*data).printing), NULL);
 	if (pthread_mutex_init(&(*data).meal_count, NULL) != 0)
 	{
-		return (pthread_mutex_destroy(&(*data).print),
+		return (pthread_mutex_destroy(&(*data).printing),
 			pthread_mutex_destroy(&(*data).death), NULL);
 	}
 	return (data);

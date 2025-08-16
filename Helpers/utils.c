@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:28 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 19:39:16 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 19:56:27 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,9 @@ void	write_status(char *state, t_philo *philo)
 	t_data		*data;
 
 	data = (*philo).data;
-	pthread_mutex_lock(&((*data).print));
+	pthread_mutex_lock(&((*data).printing));
 	if (is_dead(philo))
-	{
-		pthread_mutex_unlock(&((*data).print));
-		return ;
-	}
+		return (pthread_mutex_unlock(&((*data).printing)), (void)1);
 	if (state && !compare(state, "died"))
 	{
 		pthread_mutex_lock(&(*data).death);
@@ -60,7 +57,7 @@ void	write_status(char *state, t_philo *philo)
 	}
 	elapsed_time = what_timeizit() - (*data).start;
 	printf("%ld %d %s\n", elapsed_time, (*philo).id, state);
-	pthread_mutex_unlock(&((*data).print));
+	pthread_mutex_unlock(&((*data).printing));
 }
 
 int	ft_usleep(long milliseconds, t_philo *philo)

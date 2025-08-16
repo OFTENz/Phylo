@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:15:42 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 19:35:51 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 19:56:37 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_data
 	long			die_time;
 	int				fifth_arg;
 	long			meal_number;
-	pthread_mutex_t	print;
+	pthread_mutex_t	printing;
 	pthread_mutex_t	death;
 	pthread_mutex_t	meal_count;
 }	t_data;
