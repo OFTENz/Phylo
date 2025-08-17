@@ -6,10 +6,9 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:54 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 15:31:23 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 16:26:39 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "philo.h"
 
@@ -30,7 +29,7 @@ int	general_mutexe_init(t_data *data)
 int	philo_management(t_philo *philo)
 {
 	pthread_t	monitor;
-	t_data	*data;
+	t_data		*data;
 
 	data = (*philo).data;
 	if (philo_spawn(philo))
@@ -42,11 +41,10 @@ int	philo_management(t_philo *philo)
 	return (0);
 }
 
-
 void	philosophers_join(t_data *data, t_philo *head)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < (*data).philos_number)
 	{
@@ -55,7 +53,6 @@ void	philosophers_join(t_data *data, t_philo *head)
 		i++;
 	}
 }
-
 
 int	philo_spawn(t_philo *philo)
 {

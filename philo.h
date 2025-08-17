@@ -6,10 +6,9 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:15:42 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 15:31:26 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 16:30:38 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef PHILO_H
 # define PHILO_H
@@ -31,7 +30,6 @@ typedef struct s_gcollct
 
 # define FREE_ALL 9
 
-
 typedef struct s_data
 {
 	long			start;
@@ -48,7 +46,6 @@ typedef struct s_data
 	pthread_mutex_t	death;
 	pthread_mutex_t	meal_count;
 }	t_data;
-
 
 typedef struct s_philo
 {
@@ -67,7 +64,6 @@ typedef struct s_philo
 
 t_philo	*new_fella(int content);
 t_philo	*ft_lstlast(t_philo *first);
-
 
 void	load_it(t_data *data, int i, int value);
 void	wipe_all(t_gcollct *head);
@@ -93,6 +89,9 @@ void	eat_activity(t_philo *philo);
 long	hybrid_atoi(const char *str);
 long	what_timeizit(void);
 
+int		check_philo_status(t_philo *philo);
+int		check_starved(t_philo *philo, int is_eating);
+int		check_all_philos(t_philo *philo, int *finished);
 int		general_mutexe_init(t_data *data);
 int		satisfied_yet(t_philo *philo);
 int		bag_prepa(t_data *data, t_philo **headd);

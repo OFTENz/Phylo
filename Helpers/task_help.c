@@ -6,14 +6,11 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:17 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 19:57:35 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 16:30:08 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "philo.h"
-
-
 
 void	clean_all_mutex(t_philo *philo, int count)
 {

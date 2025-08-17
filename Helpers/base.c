@@ -6,13 +6,11 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 14:52:45 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/15 15:39:55 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 16:29:46 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../philo.h"
-
 
 void	*ft_malloc(size_t size)
 {
@@ -35,8 +33,9 @@ void	ft_free(void *ptr, int flag)
 	static t_gcollct	*last;
 	static t_gcollct	*head;
 	t_gcollct			**hold;
+
 	if (flag == FREE_ALL)
-	hold = NULL;
+		hold = NULL;
 	if (!head && ptr)
 	{
 		last = malloc(sizeof(t_gcollct));
@@ -48,10 +47,7 @@ void	ft_free(void *ptr, int flag)
 	if (!ptr && flag == FREE_ALL)
 		return (wipe_all(head), (last = NULL), (void)0);
 	if (flag == FREE_ONE && head)
-	{
-		free_one(hold, head, ptr);
-		return (free(hold));
-	}
+		return (free_one(hold, head, ptr), free(hold));
 	else
 	{
 		(*last).next = malloc(sizeof(t_gcollct));

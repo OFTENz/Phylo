@@ -6,10 +6,9 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:28 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 22:07:44 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 16:27:28 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "philo.h"
 
@@ -20,7 +19,7 @@ int	is_dead(t_philo *philo)
 	data = (*philo).data;
 	pthread_mutex_lock(&(*data).death);
 	if ((*data).died)
-		return (pthread_mutex_unlock(&(*data).death), 1);;
+		return (pthread_mutex_unlock(&(*data).death), 1);
 	return (pthread_mutex_unlock(&(*data).death), 0);
 }
 
@@ -43,7 +42,7 @@ int	compare(char *str, char *src)
 void	write_status(char *state, t_philo *philo)
 {
 	t_data		*data;
-	long	yet_time;
+	long		yet_time;
 
 	data = (*philo).data;
 	pthread_mutex_lock(&((*data).printing));
@@ -72,4 +71,30 @@ int	ft_usleep(long milliseconds, t_philo *philo)
 		usleep(500);
 	}
 	return (0);
+}
+
+void	*philo_routine(void *arg)
+{
+	t_philo	*philo;
+	t_data	*data;
+
+	philo = (t_philo *)arg;
+	data = (*philo).data;
+	pthread_mutex_lock(&(*philo).meal_time_mutex);
+	(*philo).last_meal = what_timeizit();
+	pthread_mutex_unlock(&(*philo).meal_time_mutex);
+	if ((*philo).id % 2 == 0)
+		usleep(70);
+	while (!is_dead(philo))
+	{
+		eat_management(philo);
+		if (is_dead(philo) || satisfied_yet(philo))
+			break ;
+		write_status("is sleeping", philo);
+		ft_usleep((*data).sleep_time, philo);
+		if (is_dead(philo))
+			break ;
+		write_status("is thinking", philo);
+	}
+	return (NULL);
 }

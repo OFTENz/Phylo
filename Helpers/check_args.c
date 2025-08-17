@@ -6,10 +6,9 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:41 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 19:37:09 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 16:29:52 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "philo.h"
 
@@ -63,11 +62,11 @@ int	arg_validation(int argc, char **av, t_data **data)
 
 int	single_mutex_init(t_philo *philo)
 {
-	if (pthread_mutex_init(&(*philo).is_eating_mutex, NULL) != 0)
+	if (pthread_mutex_init(&(*philo).is_eating_mutex, NULL))
 		return (0);
-	if (pthread_mutex_init(&(*philo).fork, NULL) != 0)
+	if (pthread_mutex_init(&(*philo).fork, NULL))
 		return (pthread_mutex_destroy(&(*philo).is_eating_mutex), 0);
-	if (pthread_mutex_init(&(*philo).meal_time_mutex, NULL) != 0)
+	if (pthread_mutex_init(&(*philo).meal_time_mutex, NULL))
 	{
 		pthread_mutex_destroy(&(*philo).is_eating_mutex);
 		return (pthread_mutex_destroy(&(*philo).fork), 0);
@@ -88,13 +87,13 @@ int	bag_prepa(t_data *data, t_philo **headd)
 		new = new_fella(i);
 		if (!new)
 			return (clean_all_mutex(*headd, yet), 0);
-		(*new).data = data;
 		(*new).last_meal = what_timeizit();
+		(*new).data = data;
 		if (!single_mutex_init(new))
 			return (clean_all_mutex(*headd, yet), 0);
 		ft_lstadd_back(headd, new);
-		yet++;
 		i++;
+		yet++;
 	}
 	return (1);
 }

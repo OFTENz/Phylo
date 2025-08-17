@@ -2,6 +2,59 @@
 
 					-1 Why do we  sleep the monitor for 1000 ; 
 
-					-2 why do we join the philosophers threads after the monitoring thread is finished !
 
-					-3 
+				
+		
+
+
+	what is a thread ? 
+
+			- A thread is the smallest execution unit inside of a process, all the threads in the same process share the same addresses
+					(Heap, Global variables, File descriptors ).
+
+	Why do we Use Multiple thread Programs  ? 
+
+			- Main reason is for the speed so instead using the main thread to run all the functions 
+				
+				we can assign each task for each thread this way we make it much more faster than the default case !
+
+
+	Difference between Using Process and thread ? 
+
+		- Along side with the Isolation we get from using another process, so we dont share the same addresses on the heap or the stack
+
+			also the cost of creating a thread is much more light than creating a process !
+
+	------------------------------------------------------------------------------------------------------------------
+
+	The function : pthread_create()
+
+		
+		- The first argument is the pthread_t variable the second is an attribute that used to modify the thread  behavior
+
+			like Stack Size and stuff !     The third one is the function that's gonna be runned by the process !
+		
+	------------------------------------------------------------------------------------------------------------------
+
+	The function : pthread_join()
+
+		- the first argument is the pthread_t variable and the second is the address of a pointer that will be pointing the 
+
+			return value of the the thread ! Later u can cast it to whatever u want and use it !
+
+	------------------------------------------------------------------------------------------------------------------
+
+	What is a Data race ? 
+	
+		- It's when two or more thread  accesse the same memory location without proper synchronization !
+
+	------------------------------------------------------------------------------------------------------------------
+
+	What is a Mutexe : (Mutual exclusion Lock !)
+
+		- This mutex is a locking mechanism that ensures only one thread is accessing a section of the code at a time !
+
+			Avoiding Data Races which is Multiple threads accessing the same variable with write and write or read and write 
+
+				Both Cases are considered Data races !
+
