@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:15:42 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 22:03:52 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 15:31:26 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ typedef struct s_philo
 
 t_philo	*new_fella(int content);
 t_philo	*ft_lstlast(t_philo *first);
-t_data	*general_mutexe_init(t_data *data);
 
 
 void	load_it(t_data *data, int i, int value);
@@ -77,22 +76,24 @@ void	*monitoring(void *arg);
 void	ft_free(void *ptr, int flag);
 void	write_status(char *state, t_philo *philo);
 void	one_philo_case(t_philo *philo);
-void	*philosopher_routine(void *arg);
+void	*philo_routine(void *arg);
 void	free_one(t_gcollct **hold, t_gcollct *head, void *ptr);
 void	join_threads(t_philo *philo);
 void	single_mutex_destroy(t_philo *new);
 void	update_state(t_philo *philo);
-void	eat_management(t_philo *philosopher);
+void	eat_management(t_philo *philo);
 void	*philosopher_routine(void *arg);
+void	philosophers_join(t_data *data, t_philo *head);
 void	clean_all_mutex(t_philo *philo, int count);
 void	mo_more_eating(t_philo *philo);
 void	*ft_malloc(size_t size);
 void	join_yet(t_philo *head, int yet);
-void	eat_activity(t_philo *philosopher);
+void	eat_activity(t_philo *philo);
 
 long	hybrid_atoi(const char *str);
 long	what_timeizit(void);
 
+int		general_mutexe_init(t_data *data);
 int		satisfied_yet(t_philo *philo);
 int		bag_prepa(t_data *data, t_philo **headd);
 int		philo_management(t_philo *philo);

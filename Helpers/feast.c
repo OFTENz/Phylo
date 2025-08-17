@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:48 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 22:03:48 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 22:21:18 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,21 @@ void	mo_more_eating(t_philo *philo)
 	pthread_mutex_unlock(&(*philo).is_eating_mutex);
 }
 
-void	eat_activity(t_philo *philosopher)
+void	eat_activity(t_philo *philo)
 {
 	t_data	*data;
 
-	data = (*philosopher).data;
-	write_status("took a fork !", philosopher);
-	write_status("is eating !", philosopher);
-	update_state(philosopher);
-	ft_usleep((*data).eat_time, philosopher);
-	pthread_mutex_lock(&(*philosopher).meal_time_mutex);
-	(*philosopher).meals++;
-	pthread_mutex_unlock(&(*philosopher).meal_time_mutex);
-	pthread_mutex_unlock(&((*(*philosopher).next).fork));
-	pthread_mutex_unlock(&((*philosopher).fork));
-	mo_more_eating(philosopher);
+	data = (*philo).data;
+	write_status("took a fork !", philo);
+	write_status("is eating !", philo);
+	update_state(philo);
+	ft_usleep((*data).eat_time, philo);
+	pthread_mutex_lock(&(*philo).meal_time_mutex);
+	(*philo).meals++;
+	pthread_mutex_unlock(&(*philo).meal_time_mutex);
+	pthread_mutex_unlock(&((*(*philo).next).fork));
+	pthread_mutex_unlock(&((*philo).fork));
+	mo_more_eating(philo);
 }
 
 void	one_philo_case(t_philo *philo)
@@ -61,28 +61,28 @@ void	one_philo_case(t_philo *philo)
 	return ;	
 }
 
-void	eat_management(t_philo *philosopher)
+void	eat_management(t_philo *philo)
 {
 	t_data	*data;
 
-	data = (*philosopher).data;
-	pthread_mutex_lock(&((*philosopher).fork));
-	if (is_dead(philosopher))
-		return (pthread_mutex_unlock(&((*philosopher).fork)), (void)1);
-	write_status("took a fork !", philosopher);
+	data = (*philo).data;
+	pthread_mutex_lock(&((*philo).fork));
+	if (is_dead(philo))
+		return (pthread_mutex_unlock(&((*philo).fork)), (void)1);
+	write_status("took a fork !", philo);
 	if ((*data).philos_number == 1)
-		return (one_philo_case(philosopher), (void)1);
-	pthread_mutex_lock(&((*(*philosopher).next).fork));
-	if (is_dead(philosopher))
+		return (one_philo_case(philo), (void)1);
+	pthread_mutex_lock(&((*(*philo).next).fork));
+	if (is_dead(philo))
 	{
-		pthread_mutex_unlock(&((*(*philosopher).next).fork));
-		pthread_mutex_unlock(&((*philosopher).fork));
+		pthread_mutex_unlock(&((*(*philo).next).fork));
+		pthread_mutex_unlock(&((*philo).fork));
 		return ;
 	}
-	eat_activity(philosopher);
+	eat_activity(philo);
 }
 
-void	*philosopher_routine(void *arg)
+void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
 	t_data	*data;

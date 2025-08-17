@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:28 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/16 22:05:08 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/16 22:07:44 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int	compare(char *str, char *src)
 
 void	write_status(char *state, t_philo *philo)
 {
-	long	elapsed_time;
 	t_data		*data;
+	long	yet_time;
 
 	data = (*philo).data;
 	pthread_mutex_lock(&((*data).printing));
@@ -55,8 +55,8 @@ void	write_status(char *state, t_philo *philo)
 		(*data).died = 1;
 		pthread_mutex_unlock(&(*data).death);
 	}
-	elapsed_time = what_timeizit() - (*data).start;
-	printf("%ld %d %s\n", elapsed_time, (*philo).id, state);
+	yet_time = what_timeizit() - (*data).start;
+	printf("%ld %d %s\n", yet_time, (*philo).id, state);
 	pthread_mutex_unlock(&((*data).printing));
 }
 
