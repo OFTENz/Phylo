@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:27 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 16:26:20 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 17:15:13 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int ac, char **av)
 		ft_free(NULL, FREE_ALL), 0);
 }
 
-int	iss_digit(const char *str)
+int	iss_digit(char *str)
 {
 	int	i;
 
@@ -50,7 +50,7 @@ int	iss_digit(const char *str)
 		i++;
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
-	if (!str[i])
+	if (str[i])
 		return (1);
 	return (0);
 }

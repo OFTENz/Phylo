@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:41 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 16:29:52 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 17:04:18 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,7 @@ int	arg_validation(int argc, char **av, t_data **data)
 	while (i < argc)
 	{
 		if (check_if_valid(av[i], data))
-		{
-			dprintf(2, "\nin here !\n");
 			return (1);
-		}
 		i++;
 	}
 	return (0);

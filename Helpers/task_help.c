@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:17 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 16:30:08 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 17:15:40 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,23 @@ int	ft_lstadd_back(t_philo **first, t_philo *new)
 		(*(*first)).prev = new;
 	}
 	return (1);
+}
+
+int	check_if_valid(char *arg, t_data **data)
+{
+	static int	i;
+	long		value;
+
+	if (iss_digit(arg))
+		return (write(2, "Error: not a vaild Number !\n", 44), 1);
+	value = hybrid_atoi(arg);
+	if (value <= 0)
+		return (1);
+	if ((i == 1 || i == 2 || i == 3) && value < 60)
+		return (write(2, "Error: Input a value >= 60 !\n", 30), 1);
+	if (i == 0 && value > 200)
+		return (write(2, "Error: Input a value <= 200\n", 29), 1);
+	load_it(*data, i, value);
+	i++;
+	return (0);
 }

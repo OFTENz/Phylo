@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:15:42 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 16:30:38 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 17:12:11 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,6 @@ int		arg_validation(int argc, char **av, t_data **data);
 int		philo_spawn(t_philo *philo);
 int		is_dead(t_philo *philo);
 int		single_mutex_init(t_philo *philo);
-int		iss_digit(const char *str);
+int		iss_digit(char *str);
 
 #endif
