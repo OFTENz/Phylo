@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:48 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 16:27:45 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 20:58:30 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	eat_activity(t_philo *philo)
 	t_data	*data;
 
 	data = (*philo).data;
-	write_status("took a fork !", philo);
+	write_status("has taken a fork", philo);
 	write_status("is eating !", philo);
 	update_state(philo);
 	ft_usleep((*data).eat_time, philo);
@@ -55,7 +55,7 @@ void	one_philo_case(t_philo *philo)
 
 	data = (*philo).data;
 	ft_usleep((*data).die_time, philo);
-	write_status("Died", philo);
+	write_status("died", philo);
 	pthread_mutex_unlock(&((*philo).fork));
 	return ;
 }
@@ -68,7 +68,7 @@ void	eat_management(t_philo *philo)
 	pthread_mutex_lock(&((*philo).fork));
 	if (is_dead(philo))
 		return (pthread_mutex_unlock(&((*philo).fork)), (void)1);
-	write_status("took a fork !", philo);
+	write_status("has taken a fork", philo);
 	if ((*data).philos_number == 1)
 		return (one_philo_case(philo), (void)1);
 	pthread_mutex_lock(&((*(*philo).next).fork));

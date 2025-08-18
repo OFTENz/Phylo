@@ -6,8 +6,8 @@ SRC = main.c \
 		./Helpers/base_.c \
 		./Helpers/task_help.c \
 		./Helpers/activities.c \
-		./Helpers/feast.c\
-		monitor.c \
+		./Helpers/feast.c \
+		./Helpers/monitor.c 
  
 OBJ = $(SRC:.c=.o)
 

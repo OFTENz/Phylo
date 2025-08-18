@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:54 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 16:26:39 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 23:19:49 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@ int	general_mutexe_init(t_data *data)
 		return (0);
 	if (pthread_mutex_init(&(*data).death, NULL))
 		return (pthread_mutex_destroy(&(*data).printing), 0);
-	if (pthread_mutex_init(&(*data).meal_count, NULL))
-	{
-		return (pthread_mutex_destroy(&(*data).printing),
-			pthread_mutex_destroy(&(*data).death), 0);
-	}
 	return (1);
 }
 
@@ -54,6 +49,13 @@ void	philosophers_join(t_data *data, t_philo *head)
 	}
 }
 
+void	thread_failure(t_data *data)
+{
+	pthread_mutex_lock(&(*data).death);
+	(*data).died = 1;
+	pthread_mutex_unlock(&(*data).death);
+}
+
 int	philo_spawn(t_philo *philo)
 {
 	t_philo	*head;
@@ -65,23 +67,10 @@ int	philo_spawn(t_philo *philo)
 	i = 0;
 	while (i < (*data).philos_number)
 	{
-		if (pthread_create(&((*philo).thread), NULL, philo_routine, philo))
-			return (join_yet(head, i), 1);
+		if (pthread_create(&((*philo).thread), NULL, philo_activity, philo))
+			return (join_yet(head, i), thread_failure(data), 1);
 		philo = (*philo).next;
 		i++;
 	}
 	return (0);
-}
-
-void	join_yet(t_philo *head, int yet)
-{
-	int		i;
-
-	i = 0;
-	while (i < yet)
-	{
-		pthread_join((*head).thread, NULL);
-		head = (*head).prev;
-		i++;
-	}
 }

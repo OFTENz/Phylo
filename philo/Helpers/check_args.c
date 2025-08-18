@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:06:41 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 17:04:18 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/18 16:54:29 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,22 @@ long	hybrid_atoi(const char *str)
 	return (result);
 }
 
-int	arg_validation(int argc, char **av, t_data **data)
+int	arg_validation(int ac, char **av, t_data **data)
 {
 	int	i;
 
 	*data = ft_malloc(sizeof(t_data));
 	if (!data)
 		return (1);
-	if (argc < 5 || argc > 6)
-		return (write(2, "Inavlid Arguments !\n", 34), 1);
+	if (ac < 5 || ac > 6)
+		return (write(2, "Inavlid Arguments !\n", 21), 1);
 	i = 1;
 	(**data).died = 0;
 	(**data).all_ate = 0;
 	(**data).fifth_arg = 0;
 	(**data).think_time = 0;
 	(**data).start = what_timeizit();
-	while (i < argc)
+	while (i < ac)
 	{
 		if (check_if_valid(av[i], data))
 			return (1);
@@ -79,6 +79,8 @@ int	bag_prepa(t_data *data, t_philo **headd)
 
 	i = 1;
 	yet = 0;
+	if (!(*data).philos_number)
+		return (0);
 	while (i <= (*data).philos_number)
 	{
 		new = new_fella(i);

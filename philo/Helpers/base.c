@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 14:52:45 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 16:29:46 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 22:41:25 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,18 @@ void	free_one(t_gcollct **hold, t_gcollct *head, void *ptr)
 			(*hold[0]).next = hold[2];
 		else
 			head = hold[2];
+	}
+}
+
+void	join_yet(t_philo *head, int yet)
+{
+	int		i;
+
+	i = 0;
+	while (i < yet)
+	{
+		pthread_join((*head).thread, NULL);
+		head = (*head).prev;
+		i++;
 	}
 }

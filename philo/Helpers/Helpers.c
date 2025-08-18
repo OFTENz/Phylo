@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:28 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 17:01:56 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 20:48:53 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	write_status(char *state, t_philo *philo)
 	pthread_mutex_lock(&((*data).printing));
 	if (is_dead(philo))
 		return (pthread_mutex_unlock(&((*data).printing)), (void)1);
-	if (state && !compare(state, "Died"))
+	if (state && !compare(state, "died"))
 	{
 		pthread_mutex_lock(&(*data).death);
 		(*data).died = 1;
@@ -73,7 +73,7 @@ int	ft_usleep(long milliseconds, t_philo *philo)
 	return (0);
 }
 
-void	*philo_routine(void *arg)
+void	*philo_activity(void *arg)
 {
 	t_philo	*philo;
 	t_data	*data;
@@ -84,7 +84,7 @@ void	*philo_routine(void *arg)
 	(*philo).last_meal = what_timeizit();
 	pthread_mutex_unlock(&(*philo).meal_time_mutex);
 	if ((*philo).id % 2 == 0)
-		usleep(70);
+		usleep(100);
 	while (!is_dead(philo))
 	{
 		eat_management(philo);

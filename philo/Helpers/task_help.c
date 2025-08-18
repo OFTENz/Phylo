@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 16:07:17 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/08/17 17:15:40 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/08/17 23:20:00 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	clean_all_mutex(t_philo *philo, int count)
 	}
 	pthread_mutex_destroy(&(*data).printing);
 	pthread_mutex_destroy(&(*data).death);
-	pthread_mutex_destroy(&(*data).meal_count);
 }
 
 t_philo	*new_fella(int content)
@@ -85,10 +84,12 @@ int	check_if_valid(char *arg, t_data **data)
 	long		value;
 
 	if (iss_digit(arg))
-		return (write(2, "Error: not a vaild Number !\n", 44), 1);
+		return (write(2, "Error: not a vaild Number !\n", 29), 1);
 	value = hybrid_atoi(arg);
-	if (value <= 0)
-		return (1);
+	if (value < 0)
+		return (write(2, "Error: not a vaild Number !\n", 29), 1);
+	if (i == 4 && value <= 0)
+		return (write(2, "Not a valid argument !\n", 24), 1);
 	if ((i == 1 || i == 2 || i == 3) && value < 60)
 		return (write(2, "Error: Input a value >= 60 !\n", 30), 1);
 	if (i == 0 && value > 200)
