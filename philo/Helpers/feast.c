@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 
 //	This is the function that update the state of the philo to the eating state
 //	protecting the 

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 
 //	this function is checkign if the philo ate enough 
 //	or if he should die cuz he spent to much time without eating 
